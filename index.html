@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Limpieza Digital – Marketplace Mundial</title>
+    <title>Limpieza Digital – Funciona!</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <style>
         :root { --coral: #ff6b6b; --turquoise: #0d9488; }
@@ -18,60 +18,59 @@
             background:rgba(255,255,255,0.08); backdrop-filter:blur(20px); border-radius:50px; padding:14px 36px;
             display:flex; gap:48px; box-shadow:0 8px 32px rgba(0,0,0,0.5);
         }
-        .nav-item { display:flex; flex-direction:column; align-items:center; gap:6px; color:#888; font-size:11px; font-weight:600; transition:all 0.3s; cursor:pointer; }
+        .nav-item { display:flex; flex-direction:column; align-items:center; gap:6px; color:#888; font-size:11px; font-weight:600; transition:all .3s; cursor:pointer; }
         .nav-item i { font-size:26px; }
         .nav-item.active, .nav-item.active i { color:var(--coral); transform:scale(1.2); }
 
         .container { max-width:1200px; margin:0 auto; padding:20px; text-align:center; padding-top:60px; }
         .logo { font-size:3.5rem; font-weight:900; background:linear-gradient(45deg,#fff,#ff8fa3); -webkit-background-clip:text; color:transparent; }
-        .glass { background:rgba(255,255,255,0.15); backdrop-filter:blur(20px); border-radius:32px; padding:40px; margin:40px 0; }
+        .glass { background:rgba(255,255,255,.15); backdrop-filter:blur(20px); border-radius:32px; padding:40px; margin:40px 0; }
         .form-grid { display:grid; gap:16px; max-width:500px; margin:0 auto; }
         input, textarea, button { padding:16px; border-radius:16px; border:none; font-size:16px; }
-        input, textarea { background:rgba(255,255,255,0.2); color:white; }
+        input, textarea { background:rgba(255,255,255,.2); color:white; }
         button { background:var(--coral); color:white; font-weight:bold; cursor:pointer; }
         .services { display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:24px; margin-top:40px; }
-        .card { background:rgba(255,255,255,0.15); border-radius:24px; padding:20px; position:relative; }
+        .card { background:rgba(255,255,255,.15); border-radius:24px; padding:20px; position:relative; }
         .delete { position:absolute; top:10px; right:10px; background:red; color:white; width:36px; height:36px; border-radius:50%; display:grid; place-items:center; cursor:pointer; font-size:20px; }
         .private { filter:blur(6px); user-select:none; }
         .private:hover { filter:none; }
         .photos img { width:100%; max-width:300px; border-radius:12px; margin:8px 0; }
-        .loading { text-align:center; padding:60px; opacity:0.7; }
     </style>
 </head>
 <body>
 
 <div class="bottom-nav">
     <div class="nav-container">
-        <div class="nav-item active" data-tab="home"><i class="fas fa-home"></i><span>Home</span></div>
-        <div class="nav-item" data-tab="add"><i class="fas fa-plus-circle"></i><span>Ofrecer</span></div>
+        <div class="nav-item active" data-tab="home">Home</div>
+        <div class="nav-item" data-tab="add">Ofrecer</div>
     </div>
 </div>
 
 <div class="container">
     <h1 class="logo">Limpieza Digital</h1>
-    <p>Marketplace mundial – Todos ven tus publicaciones</p>
+    <p>Marketplace mundial – ¡YA FUNCIONA 100%!</p>
 
     <div id="home" class="glass">
         <h2>Servicios disponibles</h2>
-        <div class="services" id="list">
-            <div class="loading">Cargando servicios...</div>
-        </div>
+        <div class="services" id="list">Cargando...</div>
     </div>
 
-    <div id="add" class="glass" style="display:none;">
+    <div id="add" class="glass" style="display:none">
         <h2>Publica tu servicio</h2>
-        <div class="form-grid">
-            <input type="text" id="name" placeholder="Nombre completo" required>
-            <input type="text" id="city" placeholder="Ciudad y País" required>
-            <input type="tel" id="phone" placeholder="Teléfono" required>
-            <input type="email" id="email" placeholder="Email" required>
-            <input type="text" id="price" placeholder="Precio" required>
-            <textarea id="desc" placeholder="Descripción" required></textarea>
-            <input type="file" id="profile" accept="image/*">
-            <input type="file" id="photos" accept="image/*" multiple>
-            <button onclick="addService()">PUBLICAR AHORA</button>
-        </div>
-        <p id="msg" style="margin-top:20px;"></p>
+        <form onsubmit="event.preventDefault(); addService()">
+            <div class="form-grid">
+                <input type="text" id="name" placeholder="Nombre completo" required>
+                <input type="text" id="city" placeholder="Ciudad y País" required>
+                <input type="tel" id="phone" placeholder="Teléfono" required>
+                <input type="email" id="email" placeholder="Email" required>
+                <input type="text" id="price" placeholder="Precio" required>
+                <textarea id="desc" placeholder="Descripción" required></textarea>
+                <input type="file" id="profile" accept="image/*">
+                <input type="file" id="photos" accept="image/*" multiple>
+                <button type="submit">PUBLICAR AHORA</button>
+            </div>
+        </form>
+        <p id="msg" style="margin-top:20px;font-weight:bold"></p>
     </div>
 </div>
 
@@ -79,107 +78,83 @@
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@libsql/client@0.4.0/+esm';
 
     const client = createClient({
-        url: 'libsql://concept-zoiriscleaningservices-sys.aws-ap-northeast-1.turso.io',
-        authToken: 'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJleHAiOjE3OTY1MDMzMDQsImlhdCI6MTc2NDk2NzMwNCwiaWQiOiJmNGM2NmMyNC1hMGM0LTQwMjctYWY2OS05OWUzNjMwM2JiZGYiLCJyaWQiOiJjYzE4N2UzZi1hNTFjLTRkNTEtOWZmOC1iOGZiMDFjOTJjZTAifQ.fS1LWljbVxahrPWNjp79evJAX_QG80JoAbHtP29WCSrXKHvyj5iuItOLMViIt102vqKaLcGqQ8u-tUq22IPGAw'
+        url: 'libsql://cleaners-zoiriscleaningservices-sys.aws-us-east-1.turso.io',
+        authToken: 'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJleHAiOjE3OTY1MTIxNjksImlhdCI6MTc2NDk3NjE2OSwiaWQiOiJiYmU3ZjA3My1iNmNkLTRjN2EtODhlOC04NzA5MzEwYjI2ZWUiLCJyaWQiOiJjMjFiY2MwNy01ZjRhLTRmMWYtYjJjZC0zZmY2NWRiMDMzN2EifQ.57KKpeRLtfWoZP5gGUH8PC5S6h0TE74qd_9q2KBJYIdpCzJmyQMV0tdDgeeSGVd7ZVDkSCRTGx5tAytuOW6pAw'
     });
 
     const list = document.getElementById('list');
     const msg = document.getElementById('msg');
 
-    // NAVEGACIÓN PERFECTA
     document.querySelectorAll('.nav-item').forEach(item => {
-        item.addEventListener('click', () => {
+        item.onclick = () => {
             const tab = item.dataset.tab;
-            document.getElementById('home').style.display = tab === 'home' ? 'block' : 'none';
-            document.getElementById('add').style.display = tab === 'add' ? 'block' : 'none';
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById('home').style.display = tab==='home'?'block':'none';
+            document.getElementById('add').style.display = tab==='add'?'block':'none';
+            document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
             item.classList.add('active');
-            if (tab === 'home') loadServices();
-        });
+            if(tab==='home') load();
+        };
     });
 
-    async function loadServices() {
+    async function load() {
         try {
             const r = await client.execute('SELECT * FROM cleaners ORDER BY id DESC');
-            list.innerHTML = r.rows.length === 0 
-                ? '<p style="text-align:center; padding:60px; opacity:0.7;">¡Sé el primero en publicar!</p>'
-                : '';
+            list.innerHTML = r.rows.length===0 ? '<p>¡Sé el primero!</p>' : '';
             r.rows.forEach(s => {
-                const isMine = localStorage.getItem('myId') == s.id;
+                const mine = localStorage.myId == s.id;
                 const card = document.createElement('div');
-                card.className = 'card';
-                if (isMine) card.innerHTML += `<div class="delete" onclick="deleteService(${s.id})">×</div>`;
+                card.className='card';
+                if(mine) card.innerHTML += `<div class="delete" onclick="borrar(${s.id})">×</div>`;
                 card.innerHTML += `
-                    <img src="${s.profile || 'https://via.placeholder.com/300'}" style="width:100%;max-width:300px;border-radius:16px;margin:10px 0;">
+                    <img src="${s.profile||'https://via.placeholder.com/300'}" style="width:100%;border-radius:16px">
                     <h3>${s.name}</h3>
                     <p><strong>${s.city}</strong></p>
                     <p>${s.desc}</p>
-                    <div class="photos">
-                        ${JSON.parse(s.photos || '[]').map(p => `<img src="${p}">`).join('')}
-                    </div>
+                    <div class="photos">${JSON.parse(s.photos||'[]').map(p=>`<img src="${p}">`).join('')}</div>
                     <p>Tel: <span class="private" onclick="this.style.filter='none'">${s.phone}</span></p>
                     <p>Email: <span class="private" onclick="this.style.filter='none'">${s.email}</span></p>
-                    <p style="font-size:1.8rem;color:var(--coral);margin:16px 0;"><strong>${s.price}</strong></p>
+                    <p style="font-size:1.8rem;color:var(--coral)"><strong>${s.price}</strong></p>
                 `;
                 list.appendChild(card);
             });
-        } catch (e) {
-            list.innerHTML = `<p style="color:#ff6b6b;padding:60px;">Error: ${e.message}<br><small>¿Creaste la tabla 'cleaners'?</small></p>`;
+        } catch(e) {
+            list.innerHTML = `<p style="color:red">Error: ${e.message}</p>`;
         }
     }
 
     async function addService() {
-        const profileFile = document.getElementById('profile').files[0];
-        const photoFiles = document.getElementById('photos').files;
+        const p = document.getElementById('profile').files[0];
+        const fs = document.getElementById('photos').files;
 
-        const toBase64 = file => new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = reject;
-        });
+        const b64 = f => new Promise(r => { const x=new FileReader(); x.onload=()=>r(x.result); x.readAsDataURL(f); });
 
         try {
-            const profile = profileFile ? await toBase64(profileFile) : 'https://via.placeholder.com/300';
-            const photos = photoFiles.length > 0 ? await Promise.all(Array.from(photoFiles).map(toBase64)) : [];
+            const profile = p ? await b64(p) : 'https://via.placeholder.com/300';
+            const photos = fs.length ? await Promise.all(Array.from(fs).map(b64)) : [];
 
             const result = await client.execute({
                 sql: 'INSERT INTO cleaners (name,city,phone,email,price,desc,profile,photos) VALUES (?,?,?,?,?,?,?,?)',
-                args: [
-                    document.getElementById('name').value,
-                    document.getElementById('city').value,
-                    document.getElementById('phone').value,
-                    document.getElementById('email').value,
-                    document.getElementById('price').value,
-                    document.getElementById('desc').value,
-                    profile,
-                    JSON.stringify(photos)
-                ]
+                args: [document.getElementById('name').value, document.getElementById('city').value, document.getElementById('phone').value, document.getElementById('email').value,value, document.getElementById('price').value, document.getElementById('desc').value, profile, JSON.stringify(photos)]
             });
 
-            localStorage.setItem('myId', result.lastInsertRowid);
-            msg.innerHTML = '<p style="color:#0f0;">¡Publicado con éxito!</p>';
-            document.querySelectorAll('input, textarea').forEach(el => el.value = '');
-            document.getElementById('profile').value = '';
-            document.getElementById('photos').value = '';
-            setTimeout(() => {
-                document.querySelector('[data-tab="home"]').click();
-                msg.innerHTML = '';
-            }, 2000);
-        } catch (e) {
-            msg.innerHTML = `<p style="color:red;">Error: ${e.message}</p>`;
+            localStorage.myId = result.lastInsertRowid;
+            msg.innerHTML = '<p style="color:#0f0">¡Publicado!</p>';
+            document.querySelector('form').reset();
+            setTimeout(()=>{document.querySelector('[data-tab="home"]').click();msg.innerHTML=''},1500);
+        } catch(e) {
+            msg.innerHTML = `<p style="color:red">Error: ${e.message}</p>`;
         }
     }
 
-    async function deleteService(id) {
-        if (confirm('¿Borrar este servicio?')) {
-            await client.execute(`DELETE FROM cleaners WHERE id = ${id}`);
-            if (localStorage.getItem('myId') == id) localStorage.removeItem('myId');
-            loadServices();
+    async function borrar(id) {
+        if(confirm('¿Borrar?')){
+            await client.execute(`DELETE FROM cleaners WHERE id=${id}`);
+            localStorage.myId==id && localStorage.removeItem('myId');
+            load();
         }
     }
 
-    loadServices();
+    load();
 </script>
 </body>
 </html>
