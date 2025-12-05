@@ -91,7 +91,6 @@
     <script type="module">
         import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
-        // TU SUPABASE REAL
         const supabaseUrl = 'https://tdaxbmmbenbpokyznquq.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkYXhibW1iZW5icG9reXpucXVxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ5NjMzNTMsImV4cCI6MjA4MDUzOTM1M30.sUX_iSfGRyw0rRArT7x24XCEIjSobtAbORZQa8aVjGU';
         const supabase = createClient(supabaseUrl, supabaseKey);
@@ -108,42 +107,46 @@
             .subscribe();
 
         async function loadServices() {
-            const { data, error } = await supabase.from('cleaners').select('*').order('created_at', { ascending: false });
-            if (error) {
-                errorDiv.innerHTML = `Error: ${error.message}`;
+            try {
+                const { data, error } = await supabase.from('cleaners').select('*').order('created_at', { ascending: false });
+                if (error) throw error;
+
+                servicesDiv.innerHTML = '';
+                if (!data || data.length === 0) {
+                    servicesDiv.innerHTML = '<p style="text-align:center; opacity:0.8;">¡Sé el primero en publicar!</p>';
+                    return;
+                }
+
+                data.forEach(s => {
+                    const isMine = s.id === myId;
+                    const card = document.createElement('div');
+                    card.className = `service-card ${isMine ? 'mine' : ''}`;
+                    card.innerHTML = `
+                        <img class="profile-pic" src="${s.profile}" alt="${s.name}" onerror="this.src='https://via.placeholder.com/90?text=Perfil'">
+                        <div style="padding:20px; text-align:center;">
+                            <h3 style="margin:12px 0; font-size:1.5rem;">${s.name}</h3>
+                            <p><i class="fas fa-map-marker-alt"></i> ${s.city}</p>
+                            <p style="margin:16px 0; opacity:0.9; line-height:1.5;">${s.desc}</p>
+                            <div class="photos">
+                                ${s.photos ? s.photos.map(p => `<img src="${p}" onerror="this.style.display='none'">`).join('') : ''}
+                            </div>
+                            <div style="margin:20px 0; font-size:1.1rem;">
+                                <div class="private">Teléfono: ${s.phone}</div>
+                                <div class="private">Email: ${s.email}</div>
+                            </div>
+                            <div style="font-size:1.8rem; color:var(--coral); font-weight:bold; margin:16px 0;">
+                                ${s.price}
+                            </div>
+                            ${isMine ? `<button class="delete-btn" onclick="deleteService('${s.id}')">Borrar mi anuncio</button>` : ''}
+                        </div>
+                    `;
+                    servicesDiv.appendChild(card);
+                });
+            } catch (err) {
+                console.error(err);
+                errorDiv.innerHTML = `Error cargando: ${err.message}. Verifica la tabla 'cleaners' en Supabase.`;
                 errorDiv.style.display = 'block';
-                return;
             }
-            servicesDiv.innerHTML = '';
-            if (!data || data.length === 0) {
-                servicesDiv.innerHTML = '<p style="text-align:center; opacity:0.8;">¡Sé el primero en publicar!</p>';
-                return;
-            }
-            data.forEach(s => {
-                const isMine = s.id === myId;
-                const card = document.createElement('div');
-                card.className = `service-card ${isMine ? 'mine' : ''}`;
-                card.innerHTML = `
-                    <img class="profile-pic" src="${s.profile}" alt="${s.name}" onerror="this.src='https://via.placeholder.com/90?text=Perfil'">
-                    <div style="padding:20px; text-align:center;">
-                        <h3 style="margin:12px 0; font-size:1.5rem;">${s.name}</h3>
-                        <p><i class="fas fa-map-marker-alt"></i> ${s.city}</p>
-                        <p style="margin:16px 0; opacity:0.9; line-height:1.5;">${s.desc}</p>
-                        <div class="photos">
-                            ${s.photos ? s.photos.map(p => `<img src="${p}" onerror="this.style.display='none'">`).join('') : ''}
-                        </div>
-                        <div style="margin:20px 0; font-size:1.1rem;">
-                            <div class="private">Teléfono: ${s.phone}</div>
-                            <div class="private">Email: ${s.email}</div>
-                        </div>
-                        <div style="font-size:1.8rem; color:var(--coral); font-weight:bold; margin:16px 0;">
-                            ${s.price}
-                        </div>
-                        ${isMine ? `<button class="delete-btn" onclick="deleteService('${s.id}')">Borrar mi anuncio</button>` : ''}
-                    </div>
-                `;
-                servicesDiv.appendChild(card);
-            });
         }
 
         // PUBLICAR SERVICIO
