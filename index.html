@@ -1,42 +1,40 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Limpieza Digital – Servicios de Limpieza</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-    <script src="https://unpkg.com/@libsql/client@0.6.0/dist/index.js"></script>
-    <style>
-        :root { --coral: #ff6b6b; --turquoise: #0d9488; }
-        * { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family: system-ui, sans-serif; background: linear-gradient(135deg, var(--turquoise), var(--coral)); color:white; min-height:100vh; padding-bottom:100px; }
-        
-        .bottom-nav {
-            position:fixed; bottom:0; left:0; right:0; height:90px; background:rgba(0,0,0,0.92); backdrop-filter:blur(30px);
-            display:flex; align-items:center; justify-content:center; z-index:9999; padding-bottom:env(safe-area-inset-bottom,20px);
-        }
-        .nav-container {
-            background:rgba(255,255,255,0.08); backdrop-filter:blur(20px); border-radius:50px; padding:14px 36px;
-            display:flex; gap:48px; box-shadow:0 8px 32px rgba(0,0,0,0.5);
-        }
-        .nav-item { display:flex; flex-direction:column; align-items:center; gap:6px; color:#888; font-size:11px; font-weight:600; transition:all 0.3s; cursor:pointer; }
-        .nav-item i { font-size:26px; }
-        .nav-item.active, .nav-item.active i { color:var(--coral); transform:scale(1.2); }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Limpieza Digital – Servicios de Limpieza</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+<style>
+:root { --coral: #ff6b6b; --turquoise: #0d9488; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: system-ui, sans-serif; background: linear-gradient(135deg, var(--turquoise), var(--coral)); color:white; min-height:100vh; padding-bottom:100px; }
 
-        .container { max-width:1200px; margin:0 auto; padding:20px; text-align:center; padding-top:60px; }
-        .logo { font-size:3.5rem; font-weight:900; background:linear-gradient(45deg,#fff,#ff8fa3); -webkit-background-clip:text; color:transparent; }
-        .glass { background:rgba(255,255,255,0.15); backdrop-filter:blur(20px); border-radius:32px; padding:40px; margin:40px 0; }
-        .form-grid { display:grid; gap:16px; max-width:500px; margin:0 auto; }
-        input, textarea, select, button { padding:16px; border-radius:16px; border:none; font-size:16px; }
-        input, textarea, select { background:rgba(255,255,255,0.2); color:white; }
-        button { background:var(--coral); color:white; font-weight:bold; cursor:pointer; }
-        .services { display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:24px; margin-top:40px; }
-        .card { background:rgba(255,255,255,0.15); border-radius:24px; padding:20px; position:relative; }
-        .delete { position:absolute; top:10px; right:10px; background:red; color:white; width:36px; height:36px; border-radius:50%; display:grid; place-items:center; cursor:pointer; font-size:20px; opacity:0.8; }
-        .private { filter:blur(7px); transition:0.3s; }
-        .private:hover { filter:none; }
-        .photos img { width:100%; max-width:300px; border-radius:12px; margin:8px 0; }
-    </style>
+.bottom-nav {
+    position:fixed; bottom:0; left:0; right:0; height:90px; background:rgba(0,0,0,0.92); backdrop-filter:blur(30px);
+    display:flex; align-items:center; justify-content:center; z-index:9999; padding-bottom:env(safe-area-inset-bottom,20px);
+}
+.nav-container {
+    background:rgba(255,255,255,0.08); backdrop-filter:blur(20px); border-radius:50px; padding:14px 36px;
+    display:flex; gap:48px; box-shadow:0 8px 32px rgba(0,0,0,0.5);
+}
+.nav-item { display:flex; flex-direction:column; align-items:center; gap:6px; color:#888; font-size:11px; font-weight:600; transition:all 0.3s; cursor:pointer; }
+.nav-item i { font-size:26px; }
+.nav-item.active, .nav-item.active i { color:var(--coral); transform:scale(1.2); }
+
+.container { max-width:1200px; margin:0 auto; padding:20px; text-align:center; padding-top:60px; }
+.logo { font-size:3.5rem; font-weight:900; background:linear-gradient(45deg,#fff,#ff8fa3); -webkit-background-clip:text; color:transparent; }
+.glass { background:rgba(255,255,255,0.15); backdrop-filter:blur(20px); border-radius:32px; padding:40px; margin:40px 0; }
+.form-grid { display:grid; gap:16px; max-width:500px; margin:0 auto; }
+input, textarea, select, button { padding:16px; border-radius:16px; border:none; font-size:16px; }
+input, textarea, select { background:rgba(255,255,255,0.2); color:white; }
+button { background:var(--coral); color:white; font-weight:bold; cursor:pointer; }
+.services { display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:24px; margin-top:40px; }
+.card { background:rgba(255,255,255,0.15); border-radius:24px; padding:20px; position:relative; }
+.private { filter:blur(7px); transition:0.3s; }
+.private:hover { filter:none; }
+.photos img { width:100%; max-width:300px; border-radius:12px; margin:8px 0; }
+</style>
 </head>
 <body>
 
@@ -60,15 +58,15 @@
         <h2>Ofrece tus servicios de limpieza</h2>
         <div class="form-grid">
             <input type="text" id="name" placeholder="Nombre completo" required>
-            <input type="text" id="city" placeholder="Ciudad y País (ej: Madrid, España)" required>
-            <input type="tel" id="phone" placeholder="Teléfono con código de país (+34...)" required>
+            <input type="text" id="city" placeholder="Ciudad y País" required>
+            <input type="tel" id="phone" placeholder="Teléfono con código de país" required>
             <input type="email" id="email" placeholder="Email" required>
-            <input type="text" id="price" placeholder="Precio por hora o por hora (ej: 15€/hora)" required>
+            <input type="text" id="price" placeholder="Precio por hora (ej: 15€/hora)" required>
             <select id="experience" required>
                 <option value="">Años de experiencia</option>
                 <option>menos de 1 año</option><option>1–3 años</option><option>3–5 años</option><option>más de 5 años</option>
             </select>
-            <textarea id="desc" placeholder="Describe tus servicios: limpieza general, profunda, oficinas, plancha, etc." required></textarea>
+            <textarea id="desc" placeholder="Describe tus servicios" required></textarea>
             <input type="file" id="profile" accept="image/*">
             <input type="file" id="photos" accept="image/*" multiple>
             <button onclick="addService()">PUBLICAR SERVICIO</button>
@@ -78,38 +76,7 @@
 </div>
 
 <script>
-// === CONFIGURA ToU BASE DE DATOS TURSO AQUÍ ===
-const DB_URL = "libsql://cleaners-zoiriscleaningservices-sys.aws-us-east-1.turso.io";
-const AUTH_TOKEN = "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJpYXQiOjE3NjQ5Nzc2MDksImlkIjoiYmJlN2YwNzMtYjZjZC00YzdhLTg4ZTgtODcwOTMxMGIyNmVlIiwicmlkIjoiYzIxYmNjMDctNWY0YS00ZjFmLWIyY2QtM2ZmNjVkYjAzMzdhIn0.mKVU-OU_VMgJECtV74YZlO72jBDkE64VhjSnfZfHvxjbVRBQwoo2fzV_l73wrj9yWVbqJosHnHj_MkccGvjnCA";
-
-const client = libsql.createClient({
-    url: DB_URL,
-    authToken: AUTH_TOKEN
-});
-
-// Crear tabla si no existe
-async function initDB() {
-    await client.execute(`
-        CREATE TABLE IF NOT EXISTS cleaners (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT,
-            city TEXT,
-            phone TEXT,
-            email TEXT,
-            price TEXT,
-            experience TEXT,
-            desc TEXT,
-            profile TEXT DEFAULT 'https://via.placeholder.com/150?text=Perfil',
-            photos TEXT DEFAULT '',
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-        )
-    `);
-}
-initDB();
-
-
-
-
+const API_URL = "http://localhost:3000/cleaners"; // Backend
 
 function show(section) {
     document.getElementById('home').style.display = section==='home' ? 'block' : 'none';
@@ -131,19 +98,22 @@ async function addService() {
         photos.push(url);
     }
 
-    await client.execute({
-        sql: `INSERT INTO cleaners (name,city,phone,email,price,experience,desc,profile,photos) VALUES (?,?,?,?,?,?,?,?,?)`,
-        args: [
-            document.getElementById('name').value,
-            document.getElementById('city').value,
-            document.getElementById('phone').value,
-            document.getElementById('email').value,
-            document.getElementById('price').value,
-            document.getElementById('experience').value,
-            document.getElementById('desc').value,
-            profileUrl,
-            JSON.stringify(photos)
-        ]
+    const payload = {
+        name: document.getElementById('name').value,
+        city: document.getElementById('city').value,
+        phone: document.getElementById('phone').value,
+        email: document.getElementById('email').value,
+        price: document.getElementById('price').value,
+        experience: document.getElementById('experience').value,
+        desc: document.getElementById('desc').value,
+        profile: profileUrl,
+        photos: photos
+    };
+
+    await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
     });
 
     document.getElementById('msg').innerHTML = '<p style="color:#0f0;margin-top:20px;">¡Publicado con éxito!</p>';
@@ -151,26 +121,13 @@ async function addService() {
     setTimeout(() => { show('home'); document.getElementById('msg').innerHTML=''; }, 2000);
 }
 
-// Subir imágenes a Imgur de forma anónima (gratis y sin login)
-async function uploadToImgur(file) {
-    const form = new FormData();
-    form.append('image', file);
-    const res = await fetch('https://api.imgur.com/3/image', {
-        method: 'POST',
-        headers: { Authorization: 'Client-ID 146d8d4c4e1e4e6' }, // ID público genérico
-        body: form
-    });
-    const data = await res.json();
-    return data.data.link;
-}
-
 async function loadServices() {
-    const result = await client.execute("SELECT * FROM cleaners ORDER BY id DESC");
-    const rows = result.rows;
+    const res = await fetch(API_URL);
+    const services = await res.json();
 
-    document.getElementById('list').innerHTML = rows.length === 0
+    document.getElementById('list').innerHTML = services.length === 0
         ? '<p>¡Sé el primero en ofrecer tus servicios de limpieza!</p>'
-        : rows.map(s => `
+        : services.map(s => `
             <div class="card">
                 <img src="${s.profile}" style="width:100%;max-width:300px;border-radius:16px;margin:10px 0;">
                 <h3>${s.name}</h3>
@@ -187,14 +144,20 @@ async function loadServices() {
         `).join('');
 }
 
-async function deleteService(id) {
-    if (confirm('¿Eliminar este anuncio?')) {
-        await client.execute(`DELETE FROM cleaners WHERE id = ?`, [id]);
-        loadServices();
-    }
+async function uploadToImgur(file) {
+    const form = new FormData();
+    form.append('image', file);
+    const res = await fetch('https://api.imgur.com/3/image', {
+        method: 'POST',
+        headers: { Authorization: 'Client-ID 146d8d4c4e1e4e6' },
+        body: form
+    });
+    const data = await res.json();
+    return data.data.link;
 }
 
 loadServices();
 </script>
+
 </body>
 </html>
