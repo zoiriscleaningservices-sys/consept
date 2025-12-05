@@ -21,8 +21,7 @@
         }
         .nav-item { display:flex; flex-direction:column; align-items:center; gap:6px; color:#888; font-size:11px; font-weight:600; transition:all 0.3s; cursor:pointer; }
         .nav-item i { font-size:26px; }
-        .nav-item.active, .nav-item.active i { color:var(--coral); }
-        .nav-item.active i { transform:scale(1.2); }
+        .nav-item.active, .nav-item.active i { color:var(--coral); transform:scale(1.2); }
 
         .container { max-width:1400px; margin:0 auto; padding:20px; }
         header { text-align:center; padding:100px 20px 60px; }
@@ -34,7 +33,6 @@
         .service-card { background:rgba(255,255,255,0.15); border-radius:28px; overflow:hidden; transition:0.4s; position:relative; }
         .service-card:hover { transform:translateY(-12px); box-shadow:0 30px 60px rgba(0,0,0,0.5); }
         .profile-pic { width:90px; height:90px; border-radius:50%; object-fit:cover; border:4px solid var(--coral); margin:20px auto; display:block; }
-        .photos { display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin:16px 0; }
         .photos img { width:100px; height:100px; border-radius:16px; object-fit:cover; }
         .private { filter:blur(8px); transition:0.4s; user-select:none; }
         .private:hover { filter:none; }
@@ -62,24 +60,24 @@
     <div class="container">
         <header>
             <h1 class="logo">Limpieza Digital</h1>
-            <p style="font-size:1.6rem;">Marketplace mundial – Gratis y permanente con Supabase</p>
+            <p style="font-size:1.6rem;">Marketplace mundial – 100% funcional con Supabase</p>
         </header>
 
         <section id="home" class="glass">
             <h2 style="text-align:center; margin-bottom:30px;">Cleaners disponibles</h2>
-            <div class="services-grid" id="services"><div class="loading">Cargando...</div></div>
+            <div class="services-grid" id="services"><div class="loading">Cargando cleaners...</div></div>
             <div id="error" class="error" style="display:none;"></div>
         </section>
 
         <section id="add" class="glass">
             <h2 style="text-align:center; margin-bottom:30px;">Publica tu servicio</h2>
             <form id="form">
-                <input type="text" id="name" placeholder="Nombre completo" required>
+                <input type="text" id="name" placeholder="Tu nombre" required>
                 <input type="text" id="city" placeholder="Ciudad y País" required>
-                <input type="tel" id="phone" placeholder="Teléfono (+57...)" required>
+                <input type="tel" id="phone" placeholder="Teléfono" required>
                 <input type="email" id="email" placeholder="Email" required>
-                <input type="text" id="price" placeholder="Precio (ej: $25/hora)" required>
-                <textarea id="desc" placeholder="Descripción de tus servicios" rows="4" required></textarea>
+                <input type="text" id="price" placeholder="Precio" required>
+                <textarea id="desc" placeholder="Descripción" required></textarea>
                 <input type="file" id="profile" accept="image/*" required>
                 <input type="file" id="photos" accept="image/*" multiple>
                 <button type="submit">PUBLICAR AHORA</button>
@@ -88,6 +86,7 @@
         </section>
     </div>
 
+    <!-- SUPABASE CON TUS DATOS REALES -->
     <script type="module">
         import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
@@ -101,138 +100,89 @@
         const form = document.getElementById('form');
         const myId = localStorage.getItem('myCleanerId');
 
-        // SUSCRIBIRSE A CAMBIOS EN TIEMPO REAL
-        supabase.channel('cleaners-changes')
-            .on('postgres_changes', { event: '*', schema: 'public', table: 'cleaners' }, () => loadServices())
-            .subscribe();
-
+        // CARGAR SERVICIOS
         async function loadServices() {
-            try {
-                const { data, error } = await supabase.from('cleaners').select('*').order('created_at', { ascending: false });
-                if (error) throw error;
-
-                servicesDiv.innerHTML = '';
-                if (!data || data.length === 0) {
-                    servicesDiv.innerHTML = '<p style="text-align:center; opacity:0.8;">¡Sé el primero en publicar!</p>';
-                    return;
-                }
-
-                data.forEach(s => {
-                    const isMine = s.id === myId;
-                    const card = document.createElement('div');
-                    card.className = `service-card ${isMine ? 'mine' : ''}`;
-                    card.innerHTML = `
-                        <img class="profile-pic" src="${s.profile}" alt="${s.name}" onerror="this.src='https://via.placeholder.com/90?text=Perfil'">
-                        <div style="padding:20px; text-align:center;">
-                            <h3 style="margin:12px 0; font-size:1.5rem;">${s.name}</h3>
-                            <p><i class="fas fa-map-marker-alt"></i> ${s.city}</p>
-                            <p style="margin:16px 0; opacity:0.9; line-height:1.5;">${s.desc}</p>
-                            <div class="photos">
-                                ${s.photos ? s.photos.map(p => `<img src="${p}" onerror="this.style.display='none'">`).join('') : ''}
-                            </div>
-                            <div style="margin:20px 0; font-size:1.1rem;">
-                                <div class="private">Teléfono: ${s.phone}</div>
-                                <div class="private">Email: ${s.email}</div>
-                            </div>
-                            <div style="font-size:1.8rem; color:var(--coral); font-weight:bold; margin:16px 0;">
-                                ${s.price}
-                            </div>
-                            ${isMine ? `<button class="delete-btn" onclick="deleteService('${s.id}')">Borrar mi anuncio</button>` : ''}
-                        </div>
-                    `;
-                    servicesDiv.appendChild(card);
-                });
-            } catch (err) {
-                console.error(err);
-                errorDiv.innerHTML = `Error cargando: ${err.message}. Verifica la tabla 'cleaners' en Supabase.`;
+            const { data, error } = await supabase.from('cleaners').select('*').order('created_at', { ascending: false });
+            if (error) {
+                errorDiv.innerHTML = `Error: ${error.message}`;
                 errorDiv.style.display = 'block';
+                return;
             }
+            servicesDiv.innerHTML = data.length === 0 ? '<p style="text-align:center; opacity:0.8;">¡Sé el primero!</p>' : '';
+            data.forEach(s => {
+                const isMine = s.id === myId;
+                const card = document.createElement('div');
+                card.className = `service-card ${isMine ? 'mine' : ''}`;
+                card.innerHTML = `
+                    <img class="profile-pic" src="${s.profile}" alt="${s.name}">
+                    <div style="padding:20px;text-align:center;">
+                        <h3>${s.name}</h3>
+                        <p><i class="fas fa-map-marker-alt"></i> ${s.city}</p>
+                        <p>${s.desc}</p>
+                        <div class="private">Tel: ${s.phone}</div>
+                        <div class="private">Email: ${s.email}</div>
+                        <div style="font-size:1.8rem;color:var(--coral);margin:16px 0;font-weight:bold;">${s.price}</div>
+                        ${isMine ? `<button class="delete-btn" onclick="deleteService('${s.id}')">Borrar</button>` : ''}
+                    </div>
+                `;
+                servicesDiv.appendChild(card);
+            });
         }
 
-        // PUBLICAR SERVICIO
-        form.addEventListener('submit', async (e) => {
+        // PUBLICAR
+        form.addEventListener('submit', async e => {
             e.preventDefault();
             const btn = e.target.querySelector('button');
-            const originalText = btn.textContent;
-            btn.disabled = true;
-            btn.textContent = "Publicando...";
-            formMsg.style.display = 'none';
+            btn.disabled = true; btn.textContent = "Publicando...";
 
             try {
                 const profileFile = document.getElementById('profile').files[0];
-                if (!profileFile) throw new Error('Selecciona una foto de perfil');
+                const { data: pData, error: pErr } = await supabase.storage.from('profiles').upload('public/' + Date.now() + '_' + profileFile.name, profileFile);
+                if (pErr) throw pErr;
+                const profileUrl = supabase.storage.from('profiles').getPublicUrl(pData.path).data.publicUrl;
 
-                // Subir foto de perfil
-                const { data: profileData, error: profileError } = await supabase.storage
-                    .from('profiles')
-                    .upload(`public/${Date.now()}_${profileFile.name}`, profileFile);
-                if (profileError) throw profileError;
-                const profileUrl = supabase.storage.from('profiles').getPublicUrl(profileData.path).data.publicUrl;
-
-                // Subir fotos adicionales
                 const photoFiles = document.getElementById('photos').files;
                 const photoUrls = [];
-                for (let i = 0; i < photoFiles.length; i++) {
-                    const file = photoFiles[i];
-                    const { data, error } = await supabase.storage
-                        .from('photos')
-                        .upload(`public/${Date.now()}_${file.name}`, file);
+                for (let f of photoFiles) {
+                    const { data, error } = await supabase.storage.from('photos').upload('public/' + Date.now() + '_' + f.name, f);
                     if (error) throw error;
                     photoUrls.push(supabase.storage.from('photos').getPublicUrl(data.path).data.publicUrl);
                 }
 
-                // Guardar en base de datos
-                const { data: newService, error } = await supabase
-                    .from('cleaners')
-                    .insert({
-                        name: document.getElementById('name').value,
-                        city: document.getElementById('city').value,
-                        phone: document.getElementById('phone').value,
-                        email: document.getElementById('email').value,
-                        price: document.getElementById('price').value,
-                        desc: document.getElementById('desc').value,
-                        profile: profileUrl,
-                        photos: photoUrls
-                    })
-                    .select();
+                const { data: newService, error } = await supabase.from('cleaners').insert({
+                    name: document.getElementById('name').value,
+                    city: document.getElementById('city').value,
+                    phone: document.getElementById('phone').value,
+                    email: document.getElementById('email').value,
+                    price: document.getElementById('price').value,
+                    desc: document.getElementById('desc').value,
+                    profile: profileUrl,
+                    photos: photoUrls
+                }).select();
 
                 if (error) throw error;
-
                 if (!myId) localStorage.setItem('myCleanerId', newService[0].id);
 
-                formMsg.innerHTML = '<div class="success">¡Publicado con éxito en todo el mundo!</div>';
+                formMsg.innerHTML = '<div class="success">¡Publicado con éxito!</div>';
                 formMsg.style.display = 'block';
                 form.reset();
-                document.querySelector('[data-section="home"]').click();
             } catch (err) {
-                console.error(err);
                 formMsg.innerHTML = `<div class="error">Error: ${err.message}</div>`;
                 formMsg.style.display = 'block';
-            } finally {
-                btn.disabled = false;
-                btn.textContent = originalText;
             }
+            btn.disabled = false; btn.textContent = "PUBLICAR AHORA";
         });
 
-        // BORRAR SOLO EL DUEÑO
-        window.deleteService = async (id) => {
-            if (confirm('¿Borrar tu anuncio para siempre?')) {
-                const { error } = await supabase.from('cleaners').delete().eq('id', id);
-                if (error) alert('Error: ' + error.message);
-                else if (localStorage.getItem('myCleanerId') === id) localStorage.removeItem('myCleanerId');
-            }
-        };
+        window.deleteService = id => confirm("¿Borrar?") && supabase.from('cleaners').delete().eq('id', id);
 
-        // NAVEGACIÓN
         document.querySelectorAll('.nav-item').forEach(el => {
             el.addEventListener('click', () => {
                 document.querySelectorAll('.nav-item').forEach(x => x.classList.remove('active'));
                 el.classList.add('active');
-                document.getElementById(el.dataset.section)?.scrollIntoView({behavior:'smooth'});
+                document.getElementById(el.dataset.section).scrollIntoView({behavior:'smooth'});
             });
         });
 
-        // CARGAR INICIAL
         loadServices();
     </script>
 </body>
