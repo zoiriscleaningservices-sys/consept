@@ -48,7 +48,7 @@
 
 <div class="container">
     <h1 class="logo">Limpieza Digital</h1>
-    <p>Marketplace mundial – YA FUNCIONA 100%</p>
+    <p>Marketplace mundial – LAS FOTOS QUEDAN PARA SIEMPRE</p>
 
     <div id="home" class="glass">
         <h2>Servicios disponibles</h2>
@@ -85,35 +85,42 @@
     }
 
     function addService() {
-        const reader = new FileReader();
         const profileFile = document.getElementById('profile').files[0];
         const photoFiles = document.getElementById('photos').files;
 
-        const service = {
-            id: Date.now(),
-            name: document.getElementById('name').value,
-            city: document.getElementById('city').value,
-            phone: document.getElementById('phone').value,
-            email: document.getElementById('email').value,
-            price: document.getElementById('price').value,
-            desc: document.getElementById('desc').value,
-            profile: profileFile ? URL.createObjectURL(profileFile) : 'https://via.placeholder.com/90?text=Perfil',
-            photos: [],
-            time: new Date().toLocaleString()
-        };
+        // Convertir fotos a Base64 (quedan guardadas para siempre)
+        const toBase64 = file => new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
 
-        // Subir fotos adicionales
-        for (let f of photoFiles) {
-            service.photos.push(URL.createObjectURL(f));
-        }
+        Promise.all([
+            profileFile ? toBase64(profileFile) : Promise.resolve('https://via.placeholder.com/90?text=Perfil'),
+            ...Array.from(photoFiles).map(toBase64)
+        ]).then(async ([profileBase64, ...photoBase64]) => {
+            const service = {
+                id: Date.now(),
+                name: document.getElementById('name').value,
+                city: document.getElementById('city').value,
+                phone: document.getElementById('phone').value,
+                email: document.getElementById('email').value,
+                price: document.getElementById('price').value,
+                desc: document.getElementById('desc').value,
+                profile: profileBase64,
+                photos: photoBase64,
+                time: new Date().toLocaleString()
+            };
 
-        let services = JSON.parse(localStorage.getItem('cleaners') || '[]');
-        services.unshift(service);
-        localStorage.setItem('cleaners', JSON.stringify(services));
+            let services = JSON.parse(localStorage.getItem('cleaners') || '[]');
+            services.unshift(service);
+            localStorage.setItem('cleaners', JSON.stringify(services));
 
-        msg.innerHTML = '<p style="color:#0f0; margin-top:20px;">¡Publicado con éxito!</p>';
-        document.querySelector('.form-grid').reset();
-        setTimeout(() => { show('home'); msg.innerHTML=''; }, 2000);
+            msg.innerHTML = '<p style="color:#0f0; margin-top:20px;">¡Publicado con éxito!</p>';
+            document.querySelector('.form-grid').reset();
+            setTimeout(() => { show('home'); msg.innerHTML=''; }, 2000);
+        });
     }
 
     function deleteService(id) {
