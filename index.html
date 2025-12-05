@@ -147,6 +147,7 @@
             background: rgba(255,255,255,0.2);
             color: white;
         }
+        input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.7); }
         button {
             background: var(--coral);
             color: white;
@@ -154,7 +155,10 @@
             cursor: pointer;
             font-size: 18px;
         }
-        .loading { text-align: center; padding: 40px; font-size: 1.4rem; }
+        button:disabled { opacity: 0.6; cursor: not-allowed; }
+        .loading { text-align: center; padding: 40px; font-size: 1.4rem; opacity: 0.8; }
+        .error { text-align: center; padding: 20px; background: rgba(255,0,0,0.2); border-radius: 16px; margin: 20px 0; }
+        .success { text-align: center; padding: 20px; background: rgba(0,255,0,0.2); border-radius: 16px; margin: 20px 0; }
     </style>
 </head>
 <body>
@@ -178,8 +182,9 @@
         <section id="home" class="glass">
             <h2 style="text-align:center; margin-bottom:30px;">Cleaners disponibles en todo el mundo</h2>
             <div class="services-grid" id="services">
-                <div class="loading">Cargando cleaners...</div>
+                <div class="loading"><i class="fas fa-spinner fa-spin"></i> Cargando cleaners...</div>
             </div>
+            <div id="error-msg" class="error" style="display:none;"></div>
         </section>
 
         <!-- FORMULARIO -->
@@ -196,6 +201,7 @@
                 <input type="file" id="photos" accept="image/*" multiple>
                 <button type="submit">Publicar en todo el mundo</button>
             </form>
+            <div id="form-msg" style="display:none; margin-top:20px;"></div>
         </section>
     </div>
 
@@ -220,16 +226,21 @@
         const storage = getStorage(app);
 
         const servicesDiv = document.getElementById('services');
+        const errorMsg = document.getElementById('error-msg');
         const form = document.getElementById('form');
+        const formMsg = document.getElementById('form-msg');
         const myId = localStorage.getItem('myCleanerId');
 
-        // Cargar servicios en tiempo real
+        // Cargar servicios en tiempo real con manejo de errores
         onSnapshot(collection(db, "cleaners"), (snapshot) => {
             servicesDiv.innerHTML = '';
             if (snapshot.empty) {
                 servicesDiv.innerHTML = '<p style="text-align:center; opacity:0.8;">Aún no hay cleaners publicados. ¡Sé el primero!</p>';
+                return;
             }
+            let count = 0;
             snapshot.forEach((doc) => {
+                count++;
                 const s = doc.data();
                 s.id = doc.id;
                 const isMine = s.id === myId;
@@ -237,13 +248,13 @@
                 const card = document.createElement('div');
                 card.className = `service-card ${isMine ? 'mine' : ''}`;
                 card.innerHTML = `
-                    <img class="profile-pic" src="${s.profile || 'https://via.placeholder.com/90?text=Perfil'}" alt="${s.name}">
+                    <img class="profile-pic" src="${s.profile || 'https://via.placeholder.com/90?text=Perfil'}" alt="${s.name}" onerror="this.src='https://via.placeholder.com/90?text=Perfil'">
                     <div style="padding:20px; text-align:center;">
                         <h3 style="margin:12px 0; font-size:1.5rem;">${s.name}</h3>
                         <p><i class="fas fa-map-marker-alt"></i> ${s.city}</p>
                         <p style="margin:16px 0; opacity:0.9; line-height:1.5;">${s.desc}</p>
                         <div class="photos">
-                            ${s.photos ? s.photos.map(p => `<img src="${p}">`).join('') : ''}
+                            ${s.photos ? s.photos.map(p => `<img src="${p}" onerror="this.style.display='none'">`).join('') : ''}
                         </div>
                         <div style="margin:20px 0; font-size:1.1rem;">
                             <div class="private">Teléfono: ${s.phone}</div>
@@ -257,18 +268,32 @@
                 `;
                 servicesDiv.appendChild(card);
             });
+            if (count === 0) {
+                servicesDiv.innerHTML = '<p style="text-align:center; opacity:0.8;">No hay servicios disponibles. ¡Publica el tuyo!</p>';
+            }
+        }, (error) => {
+            console.error("Error cargando servicios:", error);
+            servicesDiv.innerHTML = `<p class="error">Error al cargar: ${error.message}. Verifica las reglas de Firebase.</p>`;
+            errorMsg.innerHTML = `<strong>Error de conexión:</strong> ${error.message}. <a href="https://console.firebase.google.com/project/limpieza-digital/firestore/rules" target="_blank" style="color:var(--coral);">Arregla las reglas aquí</a>`;
+            errorMsg.style.display = 'block';
         });
 
-        // Publicar
+        // Publicar con manejo de errores
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             const submitBtn = e.target.querySelector('button');
+            const originalText = submitBtn.textContent;
             submitBtn.disabled = true;
             submitBtn.textContent = "Publicando...";
+            formMsg.style.display = 'none';
 
             try {
+                if (!document.getElementById('profile').files[0]) {
+                    throw new Error("Selecciona una foto de perfil");
+                }
+
                 const profileFile = document.getElementById('profile').files[0];
-                const photoFiles = document.getElementById('photos').files;
+                const photoFiles = Array.from(document.getElementById('photos').files);
 
                 // Subir foto de perfil
                 const profileRef = ref(storage, 'profiles/' + Date.now() + '_' + profileFile.name);
@@ -277,8 +302,7 @@
 
                 // Subir fotos adicionales
                 const photoUrls = [];
-                for (let i = 0; i < photoFiles.length; i++) {
-                    const file = photoFiles[i];
+                for (let file of photoFiles) {
                     const photoRef = ref(storage, 'photos/' + Date.now() + '_' + file.name);
                     await uploadBytes(photoRef, file);
                     photoUrls.push(await getDownloadURL(photoRef));
@@ -301,23 +325,31 @@
                     localStorage.setItem('myCleanerId', docRef.id);
                 }
 
-                alert('¡Tu servicio ha sido publicado en todo el mundo!');
                 form.reset();
+                formMsg.innerHTML = '<div class="success">¡Publicado exitosamente en todo el mundo!</div>';
+                formMsg.style.display = 'block';
                 document.querySelector('[data-section="home"]').click();
             } catch (err) {
-                alert("Error: " + err.message);
+                console.error("Error publicando:", err);
+                formMsg.innerHTML = `<div class="error">Error: ${err.message}. Verifica tu conexión y archivos.</div>`;
+                formMsg.style.display = 'block';
             } finally {
                 submitBtn.disabled = false;
-                submitBtn.textContent = "Publicar en todo el mundo";
+                submitBtn.textContent = originalText;
             }
         });
 
         // Borrar solo el dueño
         window.deleteService = async (id) => {
             if (confirm('¿Estás seguro de borrar tu anuncio para siempre?')) {
-                await deleteDoc(doc(db, "cleaners", id));
-                if (localStorage.getItem('myCleanerId') === id) {
-                    localStorage.removeItem('myCleanerId');
+                try {
+                    await deleteDoc(doc(db, "cleaners", id));
+                    if (localStorage.getItem('myCleanerId') === id) {
+                        localStorage.removeItem('myCleanerId');
+                    }
+                    alert('Anuncio borrado exitosamente');
+                } catch (err) {
+                    alert("Error al borrar: " + err.message);
                 }
             }
         };
