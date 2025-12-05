@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Limpieza Digital – Funciona!</title>
+    <title>Limpieza Digital – Marketplace Mundial</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <style>
         :root { --coral: #ff6b6b; --turquoise: #0d9488; }
@@ -35,27 +35,27 @@
         .private { filter:blur(6px); user-select:none; }
         .private:hover { filter:none; }
         .photos img { width:100%; max-width:300px; border-radius:12px; margin:8px 0; }
-        .loading { text-align:center; padding:40px; opacity:0.8; }
-        .error { background:rgba(255,0,0,0.3); padding:20px; border-radius:16px; margin:20px 0; }
+        .loading { text-align:center; padding:60px; opacity:0.7; }
     </style>
 </head>
 <body>
 
 <div class="bottom-nav">
     <div class="nav-container">
-        <div class="nav-item active" onclick="show('home')"><i class="fas fa-home"></i><span>Home</span></div>
-        <div class="nav-item" onclick="show('add')"><i class="fas fa-plus-circle"></i><span>Ofrecer</span></div>
+        <div class="nav-item active" data-tab="home"><i class="fas fa-home"></i><span>Home</span></div>
+        <div class="nav-item" data-tab="add"><i class="fas fa-plus-circle"></i><span>Ofrecer</span></div>
     </div>
 </div>
 
 <div class="container">
     <h1 class="logo">Limpieza Digital</h1>
-    <p>Marketplace mundial – TODOS ven tus publicaciones al instante</p>
+    <p>Marketplace mundial – Todos ven tus publicaciones</p>
 
     <div id="home" class="glass">
         <h2>Servicios disponibles</h2>
-        <div class="services" id="list"><div class="loading">Cargando servicios globales...</div></div>
-        <div id="error" class="error" style="display:none;"></div>
+        <div class="services" id="list">
+            <div class="loading">Cargando servicios...</div>
+        </div>
     </div>
 
     <div id="add" class="glass" style="display:none;">
@@ -71,14 +71,13 @@
             <input type="file" id="photos" accept="image/*" multiple>
             <button onclick="addService()">PUBLICAR AHORA</button>
         </div>
-        <p id="msg"></p>
+        <p id="msg" style="margin-top:20px;"></p>
     </div>
 </div>
 
 <script type="module">
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@libsql/client@0.4.0/+esm';
 
-    // TU TURSO REAL (funciona 100%)
     const client = createClient({
         url: 'libsql://concept-zoiriscleaningservices-sys.aws-ap-northeast-1.turso.io',
         authToken: 'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJleHAiOjE3OTY1MDMzMDQsImlhdCI6MTc2NDk2NzMwNCwiaWQiOiJmNGM2NmMyNC1hMGM0LTQwMjctYWY2OS05OWUzNjMwM2JiZGYiLCJyaWQiOiJjYzE4N2UzZi1hNTFjLTRkNTEtOWZmOC1iOGZiMDFjOTJjZTAifQ.fS1LWljbVxahrPWNjp79evJAX_QG80JoAbHtP29WCSrXKHvyj5iuItOLMViIt102vqKaLcGqQ8u-tUq22IPGAw'
@@ -86,19 +85,25 @@
 
     const list = document.getElementById('list');
     const msg = document.getElementById('msg');
-    const errorDiv = document.getElementById('error');
 
-    function show(section) {
-        document.getElementById('home').style.display = section==='home' ? 'block' : 'none';
-        document.getElementById('add').style.display = section==='add' ? 'block' : 'none';
-        document.querySelectorAll('.nav-item').forEach((n,i) => n.classList.toggle('active', i===(section==='home'?0:1)));
-        if (section==='home') loadServices();
-    }
+    // NAVEGACIÓN PERFECTA
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('click', () => {
+            const tab = item.dataset.tab;
+            document.getElementById('home').style.display = tab === 'home' ? 'block' : 'none';
+            document.getElementById('add').style.display = tab === 'add' ? 'block' : 'none';
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            item.classList.add('active');
+            if (tab === 'home') loadServices();
+        });
+    });
 
     async function loadServices() {
         try {
             const r = await client.execute('SELECT * FROM cleaners ORDER BY id DESC');
-            list.innerHTML = r.rows.length === 0 ? '<p>¡Sé el primero en publicar!</p>' : '';
+            list.innerHTML = r.rows.length === 0 
+                ? '<p style="text-align:center; padding:60px; opacity:0.7;">¡Sé el primero en publicar!</p>'
+                : '';
             r.rows.forEach(s => {
                 const isMine = localStorage.getItem('myId') == s.id;
                 const card = document.createElement('div');
@@ -119,8 +124,7 @@
                 list.appendChild(card);
             });
         } catch (e) {
-            errorDiv.innerHTML = `Error: ${e.message}<br>Did you create the 'cleaners' table in Turso?`;
-            errorDiv.style.display = 'block';
+            list.innerHTML = `<p style="color:#ff6b6b;padding:60px;">Error: ${e.message}<br><small>¿Creaste la tabla 'cleaners'?</small></p>`;
         }
     }
 
@@ -155,8 +159,13 @@
 
             localStorage.setItem('myId', result.lastInsertRowid);
             msg.innerHTML = '<p style="color:#0f0;">¡Publicado con éxito!</p>';
-            document.querySelector('.form-grid').reset();
-            setTimeout(() => { show('home'); msg.innerHTML=''; }, 2000);
+            document.querySelectorAll('input, textarea').forEach(el => el.value = '');
+            document.getElementById('profile').value = '';
+            document.getElementById('photos').value = '';
+            setTimeout(() => {
+                document.querySelector('[data-tab="home"]').click();
+                msg.innerHTML = '';
+            }, 2000);
         } catch (e) {
             msg.innerHTML = `<p style="color:red;">Error: ${e.message}</p>`;
         }
