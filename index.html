@@ -76,7 +76,7 @@ button { background:var(--coral); color:white; font-weight:bold; cursor:pointer;
 </div>
 
 <script>
-const API_URL = "http://localhost:3000/cleaners"; // Backend
+const API_URL = "http://localhost:3000/cleaners";
 
 function show(section) {
     document.getElementById('home').style.display = section==='home' ? 'block' : 'none';
@@ -110,15 +110,20 @@ async function addService() {
         photos: photos
     };
 
-    await fetch(API_URL, {
+    const res = await fetch(API_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
     });
 
-    document.getElementById('msg').innerHTML = '<p style="color:#0f0;margin-top:20px;">¡Publicado con éxito!</p>';
-    document.querySelector('.form-grid').reset();
-    setTimeout(() => { show('home'); document.getElementById('msg').innerHTML=''; }, 2000);
+    if(res.ok){
+        document.getElementById('msg').innerHTML = '<p style="color:#0f0;margin-top:20px;">¡Publicado con éxito!</p>';
+        document.querySelector('.form-grid').reset();
+        setTimeout(() => { show('home'); document.getElementById('msg').innerHTML=''; }, 2000);
+        loadServices();
+    } else {
+        document.getElementById('msg').innerHTML = '<p style="color:#f00;margin-top:20px;">Error al publicar</p>';
+    }
 }
 
 async function loadServices() {
