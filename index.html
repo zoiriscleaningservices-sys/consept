@@ -3,166 +3,287 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Limpieza Digital – Servicios de Limpieza</title>
+<title>Limpieza Digital</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 <style>
-:root { --coral: #ff6b6b; --turquoise: #0d9488; }
+:root {
+  --coral: #ff4757;
+  --turquoise: #00d2d3;
+  --dark: #0f0f1a;
+  --glass: rgba(255,255,255,0.08);
+  --text: #ffffff;
+}
+@media (prefers-color-scheme: light) {
+  :root { --dark: #f8f9fa; --glass: rgba(0,0,0,0.1); --text: #1a1a2e; }
+}
 * { margin:0; padding:0; box-sizing:border-box; }
-body { font-family: system-ui, sans-serif; background: linear-gradient(135deg, var(--turquoise), var(--coral)); color:white; min-height:100vh; padding-bottom:100px; }
-
-.bottom-nav {
-    position:fixed; bottom:0; left:0; right:0; height:90px; background:rgba(0,0,0,0.92); backdrop-filter:blur(30px);
-    display:flex; align-items:center; justify-content:center; z-index:9999; padding-bottom:env(safe-area-inset-bottom,20px);
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: linear-gradient(135deg, var(--turquoise), var(--coral));
+  color: var(--text);
+  min-height: 100vh;
+  padding: 90px 20px 100px;
+  transition: all 0.4s;
 }
-.nav-container {
-    background:rgba(255,255,255,0.08); backdrop-filter:blur(20px); border-radius:50px; padding:14px 36px;
-    display:flex; gap:48px; box-shadow:0 8px 32px rgba(0,0,0,0.5);
+.logo {
+  text-align: center;
+  font-size: 3.8rem;
+  font-weight: 900;
+  background: linear-gradient(45deg, #fff, #ffa0b3);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 8px;
+  text-shadow: 0 4px 20px rgba(0,0,0,0.3);
 }
-.nav-item { display:flex; flex-direction:column; align-items:center; gap:6px; color:#888; font-size:11px; font-weight:600; transition:all 0.3s; cursor:pointer; }
-.nav-item i { font-size:26px; }
-.nav-item.active, .nav-item.active i { color:var(--coral); transform:scale(1.2); }
+.subtitle { text-align:center; font-size:1.3rem; opacity:0.9; margin-bottom:30px; }
 
-.container { max-width:1200px; margin:0 auto; padding:20px; text-align:center; padding-top:60px; }
-.logo { font-size:3.5rem; font-weight:900; background:linear-gradient(45deg,#fff,#ff8fa3); -webkit-background-clip:text; color:transparent; }
-.glass { background:rgba(255,255,255,0.15); backdrop-filter:blur(20px); border-radius:32px; padding:40px; margin:40px 0; }
-.form-grid { display:grid; gap:16px; max-width:500px; margin:0 auto; }
-input, textarea, select, button { padding:16px; border-radius:16px; border:none; font-size:16px; }
-input, textarea, select { background:rgba(255,255,255,0.2); color:white; }
-button { background:var(--coral); color:white; font-weight:bold; cursor:pointer; }
-.services { display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:24px; margin-top:40px; }
-.card { background:rgba(255,255,255,0.15); border-radius:24px; padding:20px; position:relative; }
-.private { filter:blur(7px); transition:0.3s; }
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.glass {
+  background: var(--glass);
+  backdrop-filter: blur(20px);
+  border-radius: 28px;
+  padding: 32px;
+  margin: 24px 0;
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+}
+h2 {
+  text-align:center;
+  font-size:2rem;
+  margin-bottom:24px;
+  background: linear-gradient(90deg, #fff, #ff8fa3);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+/* Formulario */
+.form-grid {
+  display:grid;
+  gap:18px;
+  max-width:560px;
+  margin:0 auto;
+}
+input, textarea, select {
+  padding:18px;
+  border-radius:18px;
+  border:none;
+  background:rgba(255,255,255,0.15);
+  color:white;
+  font-size:16px;
+  backdrop-filter: blur(10px);
+}
+input::placeholder, textarea::placeholder { color:#ccc; }
+button {
+  padding:18px;
+  border-radius:18px;
+  border:none;
+  background:var(--coral);
+  color:white;
+  font-size:18px;
+  font-weight:bold;
+  cursor:pointer;
+  box-shadow:0 10px 30px rgba(255,71,87,0.4);
+  transition:0.3s;
+}
+button:hover { transform:translateY(-4px); box-shadow:0 20px 40px rgba(255,71,87,0.5); }
+
+/* Tarjetas */
+.services {
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap:24px;
+  margin-top:20px;
+}
+.card {
+  background:rgba(255,255,255,0.1);
+  border-radius:24px;
+  overflow:hidden;
+  transition:0.4s;
+  box-shadow:0 10px 30px rgba(0,0,0,0.3);
+}
+.card:hover { transform:translateY(-12px); }
+.card img { width:100%; height:220px; object-fit:cover; }
+.card-content { padding:20px; }
+.card h3 { font-size:1.5rem; margin-bottom:8px; }
+.price { font-size:2.4rem; font-weight:900; color:var(--coral); margin:16px 0; }
+.private { filter:blur(8px); transition:0.3s; user-select:none; }
 .private:hover { filter:none; }
-.photos img { width:100%; max-width:300px; border-radius:12px; margin:8px 0; }
+.photos-grid {
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px,1fr));
+  gap:8px;
+  margin:12px 0;
+}
+.photos-grid img { border-radius:12px; height:100px; object-fit:cover; }
+
+/* Botón flotante */
+.float-btn {
+  position:fixed;
+  bottom:30px;
+  left:50%;
+  transform:translateX(-50%);
+  background: white;
+  color: var(--coral);
+  font-size:22px;
+  font-weight:900;
+  padding:20px 44px;
+  border-radius:60px;
+  border:none;
+  box-shadow:0 15px 40px rgba(0,0,0,0.4);
+  z-index:999;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0% { box-shadow:0 0 0 0 rgba(255,71,87,0); }
+  70% { box-shadow:0 0 0 20px rgba(255,71,87,0); }
+  100% { box-shadow:0 0 0 0 rgba(255,71,87,0); }
+}
 </style>
 </head>
 <body>
 
-<div class="bottom-nav">
-    <div class="nav-container">
-        <div class="nav-item active" onclick="show('home')"><i class="fas fa-home"></i><span>Inicio</span></div>
-        <div class="nav-item" onclick="show('add')"><i class="fas fa-plus-circle"></i><span>Ofrecer</span></div>
-    </div>
-</div>
+<div class="logo">Limpieza Digital</div>
+<p class="subtitle">Marketplace de limpieza del hogar • Rápido • Seguro • Sin comisiones</p>
 
 <div class="container">
-    <h1 class="logo">Limpieza Digital</h1>
-    <p>Marketplace de servicios de limpieza del hogar – 100% legal y seguro</p>
 
-    <div id="home" class="glass">
-        <h2>Servicios disponibles</h2>
-        <div class="services" id="list">Cargando...</div>
+  <!-- Lista de servicios -->
+  <div class="glass">
+    <h2>Servicios Disponibles</h2>
+    <div class="services" id="list">
+      <p style="text-align:center;padding:40px;font-size:1.3rem;opacity:0.8;">Cargando servicios...</p>
     </div>
+  </div>
 
-    <div id="add" class="glass" style="display:none;">
-        <h2>Ofrece tus servicios de limpieza</h2>
-        <div class="form-grid">
-            <input type="text" id="name" placeholder="Nombre completo" required>
-            <input type="text" id="city" placeholder="Ciudad y País" required>
-            <input type="tel" id="phone" placeholder="Teléfono con código de país" required>
-            <input type="email" id="email" placeholder="Email" required>
-            <input type="text" id="price" placeholder="Precio por hora (ej: 15€/hora)" required>
-            <select id="experience" required>
-                <option value="">Años de experiencia</option>
-                <option>menos de 1 año</option><option>1–3 años</option><option>3–5 años</option><option>más de 5 años</option>
-            </select>
-            <textarea id="desc" placeholder="Describe tus servicios" required></textarea>
-            <input type="file" id="profile" accept="image/*">
-            <input type="file" id="photos" accept="image/*" multiple>
-            <button onclick="addService()">PUBLICAR SERVICIO</button>
-        </div>
-        <p id="msg"></p>
+  <!-- Formulario -->
+  <div class="glass">
+    <h2>Ofrece tu servicio de limpieza</h2>
+    <div class="form-grid">
+      <input type="text" id="name" placeholder="Nombre completo" required>
+      <input type="text" id="city" placeholder="Ciudad y país (ej: Caracas, Venezuela)" required>
+      <input type="tel" id="phone" placeholder="Teléfono WhatsApp (+58...)" required>
+      <input type="email" id="email" placeholder="Email" required>
+      <input type="text" id="price" placeholder="Precio por hora (ej: 12$)" required>
+      <select id="experience" required>
+        <option value="" disabled selected>Años de experiencia</option>
+        <option>menos de 1 año</option>
+        <option>1–3 años</option>
+        <option>3–5 años</option>
+        <option>más de 5 años</option>
+      </select>
+      <textarea id="desc" rows="4" placeholder="Describe tus servicios, horarios disponibles, zonas que cubres..." required></textarea>
+      <input type="file" id="profile" accept="image/*">
+      <small style="color:#ccc;text-align:center;">Foto de perfil (opcional)</small>
+      <input type="file" id="photos" accept="image/*" multiple>
+      <small style="color:#ccc;text-align:center;margin-bottom:20px;">Fotos de tu trabajo (opcional)</small>
+      <button id="publishBtn">PUBLICAR SERVICIO</button>
     </div>
+    <p id="msg" style="text-align:center;margin-top:20px;font-weight:bold;font-size:1.1rem;"></p>
+  </div>
 </div>
 
-<script>
-const API_URL = "http://localhost:3000/cleaners";
+<!-- BOTÓN FLOTANTE -->
+<button class="float-btn" id="floatBtn">
+  <i class="fas fa-broom fa-beat"></i> OFRECER SERVICIO AHORA
+</button>
 
-function show(section) {
-    document.getElementById('home').style.display = section==='home' ? 'block' : 'none';
-    document.getElementById('add').style.display = section==='add' ? 'block' : 'none';
-    document.querySelectorAll('.nav-item').forEach((n,i) => n.classList.toggle('active', i=== (section==='home'?0:1)));
-    if (section==='home') loadServices();
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+const supabase = createClient(
+  'https://tdaxbmmbenbpokyznquq.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkYXhibW1iZW5icG9reXpucXVxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ5NjMzNTMsImV4cCI6MjA4MDUzOTM1M30.sUX_iSfGRyw0rRArT7x24XCEIjSobtAbORZQa8aVjGU'
+)
+
+// Scroll suave al formulario
+document.getElementById('floatBtn').onclick = () => {
+  document.querySelector('.form-grid').scrollIntoView({ behavior: 'smooth' })
 }
 
-async function addService() {
-    const profileFile = document.getElementById('profile').files[0];
-    const photoFiles = document.getElementById('photos').files;
+// Publicar servicio
+document.getElementById('publishBtn').onclick = async () => {
+  const msg = document.getElementById('msg')
+  msg.innerHTML = 'Subiendo fotos...'
 
-    let profileUrl = 'https://via.placeholder.com/150?text=Perfil';
-    if (profileFile) profileUrl = await uploadToImgur(profileFile);
+  const profileFile = document.getElementById('profile').files[0]
+  const photoFiles = document.getElementById('photos').files
 
-    const photos = [];
-    for (let f of photoFiles) {
-        const url = await uploadToImgur(f);
-        photos.push(url);
-    }
+  let profileUrl = 'https://via.placeholder.com/400x400/0f0f1a/fff?text=TU+FOTO'
+  if (profileFile) {
+    const { data } = await supabase.storage
+      .from('profiles')
+      .upload('public/' + Date.now() + '_' + profileFile.name, profileFile, { upsert: true })
+    if (data) profileUrl = supabase.storage.from('profiles').getPublicUrl(data.path).data.publicUrl
+  }
 
-    const payload = {
-        name: document.getElementById('name').value,
-        city: document.getElementById('city').value,
-        phone: document.getElementById('phone').value,
-        email: document.getElementById('email').value,
-        price: document.getElementById('price').value,
-        experience: document.getElementById('experience').value,
-        desc: document.getElementById('desc').value,
-        profile: profileUrl,
-        photos: photos
-    };
+  const photos = []
+  for (let file of photoFiles) {
+    const { data } = await supabase.storage
+      .from('photos')
+      .upload('public/' + Date.now() + '_' + file.name, file, { upsert: true })
+    if (data) photos.push(supabase.storage.from('photos').getPublicUrl(data.path).data.publicUrl)
+  }
 
-    const res = await fetch(API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-    });
+  const { error } = await supabase.from('cleaners').insert({
+    name: document.getElementById('name').value.trim(),
+    city: document.getElementById('city').value.trim(),
+    phone: document.getElementById('phone').value.trim(),
+    email: document.getElementById('email').value.trim(),
+    price: document.getElementById('price').value.trim(),
+    experience: document.getElementById('experience').value,
+    desc: document.getElementById('desc').value.trim(),
+    profile: profileUrl,
+    photos: photos
+  })
 
-    if(res.ok){
-        document.getElementById('msg').innerHTML = '<p style="color:#0f0;margin-top:20px;">¡Publicado con éxito!</p>';
-        document.querySelector('.form-grid').reset();
-        setTimeout(() => { show('home'); document.getElementById('msg').innerHTML=''; }, 2000);
-        loadServices();
-    } else {
-        document.getElementById('msg').innerHTML = '<p style="color:#f00;margin-top:20px;">Error al publicar</p>';
-    }
+  if (error) {
+    msg.innerHTML = `<span style="color:#ff6b6b;">Error: ${error.message}</span>`
+  } else {
+    msg.innerHTML = '<span style="color:#00ff88;">Publicado con éxito!</span>'
+    document.querySelector('.form-grid').reset()
+    loadServices()
+    setTimeout(() => msg.innerHTML = '', 4000)
+  }
 }
 
+// Cargar servicios
 async function loadServices() {
-    const res = await fetch(API_URL);
-    const services = await res.json();
+  const { data: services } = await supabase
+    .from('cleaners')
+    .select('*')
+    .order('created_at', { ascending: false })
 
-    document.getElementById('list').innerHTML = services.length === 0
-        ? '<p>¡Sé el primero en ofrecer tus servicios de limpieza!</p>'
-        : services.map(s => `
-            <div class="card">
-                <img src="${s.profile}" style="width:100%;max-width:300px;border-radius:16px;margin:10px 0;">
-                <h3>${s.name}</h3>
-                <p><strong>${s.city}</strong> • ${s.experience} de experiencia</p>
-                <p>${s.desc}</p>
-                <div class="photos">
-                    ${(JSON.parse(s.photos || '[]')).map(p => `<img src="${p}">`).join('')}
-                </div>
-                <p>Tel: <span class="private">${s.phone}</span></p>
-                <p>Email: <span class="private">${s.email}</span></p>
-                <p style="font-size:2rem;color:var(--coral);margin:20px 0;"><strong>${s.price}</strong></p>
-                <small>Publicado: ${new Date(s.created_at).toLocaleString()}</small>
-            </div>
-        `).join('');
+  const list = document.getElementById('list')
+  if (!services || services.length === 0) {
+    list.innerHTML = '<p style="text-align:center;padding:60px;font-size:1.4rem;opacity:0.8;">Aún no hay servicios<br><br>Sé el primero en ofrecer limpieza!</p>'
+    return
+  }
+
+  list.innerHTML = services.map(s => `
+    <div class="card">
+      <img src="${s.profile}" onerror="this.src='https://via.placeholder.com/400/0f0f1a/fff?text=FOTO'">
+      <div class="card-content">
+        <h3>${s.name}</h3>
+        <p><strong>${s.city}</strong> • ${s.experience}</p>
+        <p style="margin:12px 0;line-height:1.5;">${s.desc.replace(/\n/g,'<br>')}</p>
+        ${s.photos.length ? `<div class="photos-grid">${s.photos.map(p=>`<img src="${p}">`).join('')}</div>` : ''}
+        <p>WhatsApp: <span class="private">${s.phone}</span></p>
+        <p>Email: <span class="private">${s.email}</span></p>
+        <div class="price">${s.price}</div>
+        <small style="opacity:0.7;">${new Date(s.created_at).toLocaleString('es-VE')}</small>
+      </div>
+    </div>
+  `).join('')
 }
 
-async function uploadToImgur(file) {
-    const form = new FormData();
-    form.append('image', file);
-    const res = await fetch('https://api.imgur.com/3/image', {
-        method: 'POST',
-        headers: { Authorization: 'Client-ID 146d8d4c4e1e4e6' },
-        body: form
-    });
-    const data = await res.json();
-    return data.data.link;
-}
-
-loadServices();
+loadServices()
 </script>
-
 </body>
 </html>
