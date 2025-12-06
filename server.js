@@ -8,7 +8,7 @@ app.use(express.json());
 
 const client = createClient({
   url: "libsql://cleaners-zoiriscleaningservices-sys.aws-us-east-1.turso.io",
-  authToken: "YOUR_AUTH_TOKEN_HERE"
+  authToken: "YOUR_AUTH_TOKEN_HERE" // replace with your Turso token
 });
 
 // Initialize table
