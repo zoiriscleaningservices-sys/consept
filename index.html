@@ -25,86 +25,18 @@ body {
   padding: 90px 20px 100px;
   transition: all 0.4s;
 }
-.logo {
-  text-align: center;
-  font-size: 3.8rem;
-  font-weight: 900;
-  background: linear-gradient(45deg, #fff, #ffa0b3);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  margin-bottom: 8px;
-  text-shadow: 0 4px 20px rgba(0,0,0,0.3);
-}
+.logo { text-align: center; font-size: 3.8rem; font-weight: 900; background: linear-gradient(45deg, #fff, #ffa0b3); -webkit-background-clip: text; color: transparent; margin-bottom: 8px; text-shadow: 0 4px 20px rgba(0,0,0,0.3); }
 .subtitle { text-align:center; font-size:1.3rem; opacity:0.9; margin-bottom:30px; }
-
-.container {
-  max-width: 1100px;
-  margin: 0 auto;
-}
-.glass {
-  background: var(--glass);
-  backdrop-filter: blur(20px);
-  border-radius: 28px;
-  padding: 32px;
-  margin: 24px 0;
-  border: 1px solid rgba(255,255,255,0.1);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-}
-h2 {
-  text-align:center;
-  font-size:2rem;
-  margin-bottom:24px;
-  background: linear-gradient(90deg, #fff, #ff8fa3);
-  -webkit-background-clip: text;
-  color: transparent;
-}
-
-/* Formulario */
-.form-grid {
-  display:grid;
-  gap:18px;
-  max-width:560px;
-  margin:0 auto;
-}
-input, textarea, select {
-  padding:18px;
-  border-radius:18px;
-  border:none;
-  background:rgba(255,255,255,0.15);
-  color:white;
-  font-size:16px;
-  backdrop-filter: blur(10px);
-}
+.container { max-width: 1100px; margin: 0 auto; }
+.glass { background: var(--glass); backdrop-filter: blur(20px); border-radius: 28px; padding: 32px; margin: 24px 0; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+h2 { text-align:center; font-size:2rem; margin-bottom:24px; background: linear-gradient(90deg, #fff, #ff8fa3); -webkit-background-clip: text; color: transparent; }
+.form-grid { display:grid; gap:18px; max-width:560px; margin:0 auto; }
+input, textarea, select { padding:18px; border-radius:18px; border:none; background:rgba(255,255,255,0.15); color:white; font-size:16px; backdrop-filter: blur(10px); }
 input::placeholder, textarea::placeholder { color:#ccc; }
-button {
-  padding:18px;
-  border-radius:18px;
-  border:none;
-  background:var(--coral);
-  color:white;
-  font-size:18px;
-  font-weight:bold;
-  cursor:pointer;
-  box-shadow:0 10px 30px rgba(255,71,87,0.4);
-  transition:0.3s;
-}
+button { padding:18px; border-radius:18px; border:none; background:var(--coral); color:white; font-size:18px; font-weight:bold; cursor:pointer; box-shadow:0 10px 30px rgba(255,71,87,0.4); transition:0.3s; }
 button:hover { transform:translateY(-4px); box-shadow:0 20px 40px rgba(255,71,87,0.5); }
-
-/* Tarjetas */
-.services {
-  display:grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-  gap:24px;
-  margin-top:20px;
-}
-.card {
-  background:rgba(255,255,255,0.1);
-  border-radius:24px;
-  overflow:hidden;
-  transition:0.4s;
-  box-shadow:0 10px 30px rgba(0,0,0,0.3);
-}
+.services { display:grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap:24px; margin-top:20px; }
+.card { background:rgba(255,255,255,0.1); border-radius:24px; overflow:hidden; transition:0.4s; box-shadow:0 10px 30px rgba(0,0,0,0.3); }
 .card:hover { transform:translateY(-12px); }
 .card img { width:100%; height:220px; object-fit:cover; }
 .card-content { padding:20px; }
@@ -112,39 +44,16 @@ button:hover { transform:translateY(-4px); box-shadow:0 20px 40px rgba(255,71,87
 .price { font-size:2.4rem; font-weight:900; color:var(--coral); margin:16px 0; }
 .private { filter:blur(8px); transition:0.3s; user-select:none; }
 .private:hover { filter:none; }
-.photos-grid {
-  display:grid;
-  grid-template-columns: repeat(auto-fill, minmax(100px,1fr));
-  gap:8px;
-  margin:12px 0;
-}
+.photos-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(100px,1fr)); gap:8px; margin:12px 0; }
 .photos-grid img { border-radius:12px; height:100px; object-fit:cover; }
-
-/* Botón flotante */
 .float-btn {
-  position:fixed;
-  bottom:30px;
-  left:50%;
-  transform:translateX(-50%);
-  background: white;
-  color: var(--coral);
-  font-size:22px;
-  font-weight:900;
-  padding:20px 44px;
-  border-radius:60px;
-  border:none;
-  box-shadow:0 15px 40px rgba(0,0,0,0.4);
-  z-index:999;
-  display:flex;
-  align-items:center;
-  gap:14px;
-  animation: pulse 2s infinite;
+  position:fixed; bottom:30px; left:50%; transform:translateX(-50%);
+  background: white; color: var(--coral); font-size:22px; font-weight:900;
+  padding:20px 44px; border-radius:60px; border:none;
+  box-shadow:0 15px 40px rgba(0,0,0,0.4); z-index:999;
+  display:flex; align-items:center; gap:14px; animation: pulse 2s infinite;
 }
-@keyframes pulse {
-  0% { box-shadow:0 0 0 0 rgba(255,71,87,0); }
-  70% { box-shadow:0 0 0 20px rgba(255,71,87,0); }
-  100% { box-shadow:0 0 0 0 rgba(255,71,87,0); }
-}
+@keyframes pulse { 0%{box-shadow:0 0 0 0 rgba(255,71,87,0.7);} 70%{box-shadow:0 0 0 20px rgba(255,71,87,0);} 100%{box-shadow:0 0 0 0 rgba(255,71,87,0);} }
 </style>
 </head>
 <body>
@@ -153,32 +62,24 @@ button:hover { transform:translateY(-4px); box-shadow:0 20px 40px rgba(255,71,87
 <p class="subtitle">Marketplace de limpieza del hogar • Rápido • Seguro • Sin comisiones</p>
 
 <div class="container">
-
-  <!-- Lista de servicios -->
   <div class="glass">
     <h2>Servicios Disponibles</h2>
-    <div class="services" id="list">
-      <p style="text-align:center;padding:40px;font-size:1.3rem;opacity:0.8;">Cargando servicios...</p>
-    </div>
+    <div class="services" id="list">Cargando...</div>
   </div>
 
-  <!-- Formulario -->
   <div class="glass">
     <h2>Ofrece tu servicio de limpieza</h2>
     <div class="form-grid">
       <input type="text" id="name" placeholder="Nombre completo" required>
-      <input type="text" id="city" placeholder="Ciudad y país (ej: Caracas, Venezuela)" required>
-      <input type="tel" id="phone" placeholder="Teléfono WhatsApp (+58...)" required>
+      <input type="text" id="city" placeholder="Ciudad y país" required>
+      <input type="tel" id="phone" placeholder="WhatsApp (+58...)" required>
       <input type="email" id="email" placeholder="Email" required>
-      <input type="text" id="price" placeholder="Precio por hora (ej: 12$)" required>
+      <input type="text" id="price" placeholder="Precio por hora" required>
       <select id="experience" required>
         <option value="" disabled selected>Años de experiencia</option>
-        <option>menos de 1 año</option>
-        <option>1–3 años</option>
-        <option>3–5 años</option>
-        <option>más de 5 años</option>
+        <option>menos de 1 año</option><option>1–3 años</option><option>3–5 años</option><option>más de 5 años</option>
       </select>
-      <textarea id="desc" rows="4" placeholder="Describe tus servicios, horarios disponibles, zonas que cubres..." required></textarea>
+      <textarea id="desc" rows="4" placeholder="Describe tus servicios, horarios, zonas..."></textarea>
       <input type="file" id="profile" accept="image/*">
       <small style="color:#ccc;text-align:center;">Foto de perfil (opcional)</small>
       <input type="file" id="photos" accept="image/*" multiple>
@@ -189,47 +90,35 @@ button:hover { transform:translateY(-4px); box-shadow:0 20px 40px rgba(255,71,87
   </div>
 </div>
 
-<!-- BOTÓN FLOTANTE -->
-<button class="float-btn" id="floatBtn">
-  <i class="fas fa-broom fa-beat"></i> OFRECER SERVICIO AHORA
-</button>
+<button class="float-btn" id="floatBtn">Ofrecer Servicio Ahora</button>
 
 <script type="module">
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
-const supabase = createClient(
-  'https://tdaxbmmbenbpokyznquq.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkYXhibW1iZW5icG9reXpucXVxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ5NjMzNTMsImV4cCI6MjA4MDUzOTM1M30.sUX_iSfGRyw0rRArT7x24XCEIjSobtAbORZQa8aVjGU'
-)
+const supabase = createClient('https://tdaxbmmbenbpokyznquq.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkYXhibW1iZW5icG9reXpucXVxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ5NjMzNTMsImV4cCI6MjA4MDUzOTM1M30.sUX_iSfGRyw0rRArT7x24XCEIjSobtAbORZQa8aVjGU')
 
-// Scroll suave al formulario
-document.getElementById('floatBtn').onclick = () => {
-  document.querySelector('.form-grid').scrollIntoView({ behavior: 'smooth' })
-}
+document.getElementById('floatBtn').onclick = () => document.querySelector('.form-grid').scrollIntoView({behavior:'smooth'})
 
-// Publicar servicio
 document.getElementById('publishBtn').onclick = async () => {
   const msg = document.getElementById('msg')
-  msg.innerHTML = 'Subiendo fotos...'
+  msg.innerHTML = 'Subiendo...'
 
   const profileFile = document.getElementById('profile').files[0]
   const photoFiles = document.getElementById('photos').files
 
-  let profileUrl = 'https://via.placeholder.com/400x400/0f0f1a/fff?text=TU+FOTO'
+  let profileUrl = 'https://via.placeholder.com/400/0f0f1a/fff?text=FOTO'
   if (profileFile) {
-    const { data } = await supabase.storage
-      .from('profiles')
-      .upload('public/' + Date.now() + '_' + profileFile.name, profileFile, { upsert: true })
+    const { data } = await supabase.storage.from('profiles').upload('public/' + Date.now() + '_' + profileFile.name, profileFile, { upsert: true })
     if (data) profileUrl = supabase.storage.from('profiles').getPublicUrl(data.path).data.publicUrl
   }
 
   const photos = []
   for (let file of photoFiles) {
-    const { data } = await supabase.storage
-      .from('photos')
-      .upload('public/' + Date.now() + '_' + file.name, file, { upsert: true })
+    const { data } = await supabase.storage.from('photos').upload('public/' + Date.now() + '_' + file.name, file, { upsert: true })
     if (data) photos.push(supabase.storage.from('photos').getPublicUrl(data.path).data.publicUrl)
   }
+
+  const descValue = document.getElementById('desc').value.trim() || "Servicios de limpieza general"
 
   const { error } = await supabase.from('cleaners').insert({
     name: document.getElementById('name').value.trim(),
@@ -238,13 +127,13 @@ document.getElementById('publishBtn').onclick = async () => {
     email: document.getElementById('email').value.trim(),
     price: document.getElementById('price').value.trim(),
     experience: document.getElementById('experience').value,
-    desc: document.getElementById('desc').value.trim(),
+    desc: descValue,
     profile: profileUrl,
     photos: photos
   })
 
   if (error) {
-    msg.innerHTML = `<span style="color:#ff6b6b;">Error: ${error.message}</span>`
+    msg.innerHTML = `<span style="color:#ff4757;">Error: ${error.message}</span>`
   } else {
     msg.innerHTML = '<span style="color:#00ff88;">Publicado con éxito!</span>'
     document.querySelector('.form-grid').reset()
@@ -253,19 +142,13 @@ document.getElementById('publishBtn').onclick = async () => {
   }
 }
 
-// Cargar servicios
 async function loadServices() {
-  const { data: services } = await supabase
-    .from('cleaners')
-    .select('*')
-    .order('created_at', { ascending: false })
-
+  const { data: services } = await supabase.from('cleaners').select('*').order('created_at', { ascending: false })
   const list = document.getElementById('list')
   if (!services || services.length === 0) {
-    list.innerHTML = '<p style="text-align:center;padding:60px;font-size:1.4rem;opacity:0.8;">Aún no hay servicios<br><br>Sé el primero en ofrecer limpieza!</p>'
+    list.innerHTML = '<p style="text-align:center;padding:60px;font-size:1.4rem;opacity:0.8;">Aún no hay servicios<br><br>Sé el primero!</p>'
     return
   }
-
   list.innerHTML = services.map(s => `
     <div class="card">
       <img src="${s.profile}" onerror="this.src='https://via.placeholder.com/400/0f0f1a/fff?text=FOTO'">
